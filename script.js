@@ -1,52 +1,79 @@
 let currentDisplay = "";
-let resultDisplay = false;
-let newValue = document.querySelector('.resultContent');
-let calculation = document.querySelector('.calculation');
-newValue.value = '0';
+let newValue = document.querySelector(".resultContent");
+let calculation = document.querySelector(".calculation");
+newValue.value = "0";
+let val1, val2;
+let valuesToClear = [];
 
-newValue.onselect = function(event) {
+newValue.onselect = function (event) {
   event.preventDefault();
 };
 
-function appendValue (value) {
-  if (currentDisplay === '' || resultDisplay) {
+function appendValue(value) {
+  valuesToClear.push(value)
+  if (currentDisplay === "") {
     currentDisplay = value;
   } else {
-    if (currentDisplay.slice(0,1) > 0) {
-      currentDisplay += value;
+    if (currentDisplay.slice(0, 1) > 0) {
+      currentDisplay = valuesToClear.join('');
     } else {
       currentDisplay = value;
     }
   }
 
-  resultDisplay = false;
-
-  displayUpdate() 
-  displaycal(value)
+  displayUpdate();
+  console.log(valuesToClear)
 }
 
-function displayUpdate () {
-newValue.value = currentDisplay;
+function displayUpdate() {
+  newValue.value = currentDisplay;
 }
 
-
+function displayCal(cal) {
+  currentDisplay = "";
+  valuesToClear = [];
+  calculation.innerHTML = newValue.value + cal;
+  val1 = newValue.value;
+  console.log(val1);
+  console.log(calculation.innerHTML);
+}
 
 const calculateResult = function () {
-  calculation.innerHTML += currentDisplay + ' = ';
-  let valueToBeCalculated = calculation.innerHTML.slice().replace(' = ', '')
-  console.log(valueToBeCalculated)
-  let result = eval(valueToBeCalculated)
-  currentDisplay = result;
-  displayUpdate()
-  resultDisplay = true;
+  val2 = valuesToClear.join('');
+  console.log(val2);
+  let operands = calculation.innerHTML.slice(-2);
+  console.log(operands);
+  calculation.innerHTML += val2 + " " + "=";
+  math(val1, val2, operands);
+};
+
+const math = function (a, b, cal) {
+  currentDisplay = `${Number(a) + cal + Number(b)}`;
+  if (currentDisplay.includes("+")) {
+    currentDisplay = Number(a) + Number(b);
+  } else if (currentDisplay.includes("-")) {
+    currentDisplay = Number(a) - Number(b);
+  } else if (currentDisplay.includes("/")) {
+    currentDisplay = Number(a) / Number(b);
+  } else if (currentDisplay.includes("*")) {
+    currentDisplay = Number(a) * Number(b);
+  }
+  displayUpdate();
+  console.log(currentDisplay); 
 }
 
-function displaycal(cal) {
-  if (cal === ' * ' || cal === ' / ' || cal === ' + ' || cal === ' - ') {
-    const newCurrentDisplay = currentDisplay.slice()
-    newValue.value = newCurrentDisplay.replace(cal, '');
-    calculation.innerHTML = newValue.value + cal;
-    console.log(calculation.innerHTML)
-    resultDisplay = true;
+document.querySelector('.backspace').addEventListener('click', function() {
+  if (calculation.innerHTML.slice(-1) ==='=') {
+    calculation.innerHTML = '';
+  } else {
+    if (valuesToClear.length  === 1) {
+      newValue.value = '0'
+      valuesToClear = []
+    } else {
+      valuesToClear.pop()
+      newValue.value = valuesToClear.join('');
+    }
   }
-}
+  console.log(calculation.innerHTML.slice(-2))
+  console.log(valuesToClear)
+})
