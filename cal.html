@@ -9,7 +9,8 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <title>Document</title>
+    <link rel="icon" type="img/svg" href="images/calculator.svg">
+    <title>Calculator App</title>
 
     <style>
       .calculator-box {
@@ -69,7 +70,7 @@
       }
 
       .calculation {
-        height: 25px;
+        min-height: 25px;
       }
 
       input {
@@ -113,10 +114,6 @@
         .calculator { 
           height: 580px;
         }
-
-        /* .buttons { 
-          height: 370px;
-        } */
       }
     </style>
   </head>
@@ -172,7 +169,7 @@
           </div>
         </div>
 
-        <div class="calculation d-flex justify-content-end align-items-center mt-2 px-2">
+        <div class="calculation d-flex justify-content-end align-items-center mt-2 px-2 text-break">
         </div>
 
         <div class="result mb-2">
@@ -189,15 +186,15 @@
         </div>
 
         <div class="buttons mt-1">
-          <button>%</button>
-          <button>CE</button>
-          <button>C</button>
+          <button onclick="bigMath('%')">%</button>
+          <button onclick="clearEntry()">CE</button>
+          <button onclick="Clear()">C</button>
           <button class="backspace">
             <img src="images/backspace.svg" alt="" class="w-25" />
           </button>
-          <button><sup>1</sup>/x</button>
-          <button>x <sup>2</sup></button>
-          <button><sup>2</sup>&#8730;x</button>
+          <button onclick="bigMath('reciprocal')"><sup>1</sup>/x</button>
+          <button onclick="bigMath('square')">x <sup>2</sup></button>
+          <button onclick="bigMath('squareRoot')"><sup>2</sup>&#8730;x</button>
           <button class="arithmetic" onclick="displayCal(' / ')">
             <img src="images/divide-solid.svg" alt="" class="w-25" />
           </button>
@@ -219,7 +216,9 @@
           <button class="arithmetic" onclick="displayCal(' + ')">
             <img src="images/plus.svg" alt="" class="w-50" />
           </button>
-          <button>
+
+          <input type="checkbox" id="changeSignInput" style="display: none;">
+          <button id="changeSignBtn">
             <img src="images/plus-slash-minus.svg" alt="" class="w-25" />
           </button>
           <button onclick="appendValue('0')">0</button>
@@ -230,8 +229,6 @@
         </div>
       </div>
     </div>
-<!-- 
-    <input type="number" class="fw-semibold px-2 col-12" width="w-100" id="input--box"/> -->
 
     <script defer
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
